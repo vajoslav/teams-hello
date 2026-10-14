@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rezervácie áut – Hello World</title>
+  <script src="https://res.cdn.office.net/teams-js/2.22.0/js/MicrosoftTeams.min.js"></script>
+  <style>
+    :root { --bg:#f5f5f5; --card:#fff; --text:#242424; --muted:#616161; --accent:#464FEB; }
+    body.dark { --bg:#1f1f1f; --card:#292929; --text:#fff; --muted:#adadad; --accent:#7f85f5; }
+    body { margin:0; font-family:"Segoe UI",sans-serif; background:var(--bg); color:var(--text);
+           display:flex; align-items:center; justify-content:center; min-height:100vh; }
+    .card { background:var(--card); padding:32px 40px; border-radius:8px;
+            box-shadow:0 2px 8px rgba(0,0,0,.12); text-align:center; max-width:420px; }
+    h1 { margin:0 0 8px; color:var(--accent); font-size:28px; }
+    p  { margin:4px 0; color:var(--muted); }
+    .car { font-size:56px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="car">🚗</div>
+    <h1>Hello World!</h1>
+    <p id="user">Načítavam…</p>
+    <p id="env"></p>
+  </div>
+  <script>
+    microsoftTeams.app.initialize().then(async () => {
+      const ctx = await microsoftTeams.app.getContext();
+      document.getElementById("user").textContent =
+        "Ahoj, " + (ctx.user?.userPrincipalName || "používateľ") + " 👋";
+      document.getElementById("env").textContent =
+        "Bežím v Teams (" + ctx.app.host.clientType + ", téma: " + ctx.app.theme + ")";
+      if (ctx.app.theme !== "default") document.body.classList.add("dark");
+      microsoftTeams.app.registerOnThemeChangeHandler(t =>
+        document.body.classList.toggle("dark", t !== "default"));
+    }).catch(() => {
+      document.getElementById("user").textContent = "Stránka beží mimo Teams.";
+    });
+  </script>
+</body>
+</html>
